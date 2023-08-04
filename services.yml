@@ -1,0 +1,33 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: deploy
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: deployment-pod
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: deployment-pod
+    spec:
+      containers:
+      - image: sudheer10thota/webapp:737166b45d0577904d20b486a4c4d157b4c51011
+        name: webapp
+        ports:
+        - containerPort: 8090
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: webapp
+spec:
+  type: LoadBalancer
+  selector:
+    app: deployment-pod
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9090
